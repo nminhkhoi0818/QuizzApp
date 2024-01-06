@@ -13,12 +13,12 @@ const HeaderComponent = () => {
         }}
       >
         <div className="container d-flex align-items-center text-light">
-          <img src="images/logo.svg" alt="" style={{ marginRight: "auto" }} />
+          <img src="/images/logo.svg" alt="" style={{ marginRight: "auto" }} />
           <div className="d-flex align-items-center">
             <p>
               Hi, <span>Minh Khoi</span>
             </p>
-            <img src="images/girl.jpg" alt="" className="account-image ms-4" />
+            <img src="/images/girl.jpg" alt="" className="account-image ms-4" />
           </div>
         </div>
       </div>
