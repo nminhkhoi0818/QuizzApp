@@ -44,7 +44,7 @@ const LoginPage = () => {
         handleSuccess(message);
         setTimeout(() => {
           navigate("/");
-        }, 2000);
+        }, 1000);
       } else {
         handleError(message);
       }
