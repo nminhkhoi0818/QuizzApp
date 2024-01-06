@@ -1,7 +1,7 @@
 import React from "react";
 import HeaderComponent from "../components/HeaderComponent";
 import FooterComponent from "../components/FooterComponent";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const TopicPage = () => {
   let { topicName } = useParams();
@@ -58,8 +58,19 @@ const TopicPage = () => {
               })}
             </div>
             <div className="play-section d-flex flex-column justify-content-center align-items-center">
+              <img src="/images/icon-2.png" className="top-right-icon" alt="" />
+              <img
+                src="/images/icon-3.png"
+                className="bottom-right-icon"
+                alt=""
+              />
               <p className="h5 mb-3">Do you want to attempt?</p>
-              <button className="play-btn">PLAY NOW</button>
+              <Link
+                to={`/topic/${topicName}/playing`}
+                className="play-btn text-center"
+              >
+                PLAY NOW
+              </Link>
             </div>
           </div>
         </div>

@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import TopicPage from "./pages/TopicPage";
+import PlayingPage from "./pages/PlayingPage";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: "/topic/:topicName",
     element: <TopicPage />,
+  },
+  {
+    path: "/topic/:topicName/playing",
+    element: <PlayingPage />,
   },
 ]);
 
