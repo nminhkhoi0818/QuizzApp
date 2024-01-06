@@ -1,7 +1,65 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const RegisterPage = () => {
+  const [inputValue, setInputValue] = useState({
+    email: "",
+    password: "",
+    username: "",
+  });
+  const { email, password, username } = inputValue;
+  const navigate = useNavigate();
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setInputValue({
+      ...inputValue,
+      [name]: value,
+    });
+  };
+
+  const handleSuccess = (msg) => {
+    toast.success(msg, {
+      position: "bottom-right",
+    });
+  };
+
+  const handleError = (msg) => {
+    toast.error(msg, {
+      position: "bottom-right",
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post(
+        "http://localhost:4000/signup",
+        { ...inputValue },
+        { withCredentials: true }
+      );
+      const { success, message } = data;
+      if (success) {
+        handleSuccess(message);
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      } else {
+        handleError(message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setInputValue({
+      ...inputValue,
+      email: "",
+      password: "",
+      username: "",
+    });
+  };
+
   return (
     <>
       <div
@@ -14,68 +72,65 @@ const RegisterPage = () => {
           height: "100vh",
         }}
       >
-        <div class="container py-5 h-100">
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div className="container py-5 h-100">
+          <div className="row d-flex justify-content-center align-items-center h-100">
+            <div className="col-12 col-md-8 col-lg-6 col-xl-5">
               <div
-                class="card shadow-2-strong"
+                className="card shadow-2-strong"
                 style={{ borderRadius: "1rem" }}
               >
-                <div class="card-body p-4">
-                  <h4 class="mb-5 text-center">Sign up for free</h4>
-                  <div class="form-outline mb-4">
-                    <label class="form-label" for="typeEmailX-2">
-                      Full name
-                    </label>
-                    <input
-                      type="text"
-                      id="typeEmailX-2"
-                      class="form-control"
-                      placeholder="Type your name"
-                    />
-                  </div>
+                <div className="card-body p-4">
+                  <h4 className="mb-5 text-center">Sign up for free</h4>
+                  <form onSubmit={handleSubmit}>
+                    <div className="form-outline mb-4">
+                      <label className="form-label" htmlFor="typeEmailX-2">
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={email}
+                        className="form-control"
+                        placeholder="Type your email"
+                        onChange={handleOnChange}
+                      />
+                    </div>
 
-                  <div class="form-outline mb-4">
-                    <label class="form-label" for="typeEmailX-2">
-                      Username
-                    </label>
-                    <input
-                      type="text"
-                      id="typeEmailX-2"
-                      class="form-control"
-                      placeholder="Type your name"
-                    />
-                  </div>
+                    <div className="form-outline mb-4">
+                      <label className="form-label" htmlFor="typeEmailX-2">
+                        Username
+                      </label>
+                      <input
+                        type="text"
+                        name="username"
+                        value={username}
+                        className="form-control"
+                        placeholder="Type your name"
+                        onChange={handleOnChange}
+                      />
+                    </div>
 
-                  <div class="form-outline mb-4">
-                    <label class="form-label" for="typePasswordX-2">
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      id="typePasswordX-2"
-                      class="form-control"
-                      placeholder="Type your password"
-                    />
-                  </div>
-                  <div class="form-outline mb-4">
-                    <label class="form-label" for="typePasswordX-2">
-                      Confirm your password
-                    </label>
-                    <input
-                      type="password"
-                      id="typePasswordX-2"
-                      class="form-control"
-                      placeholder="Type your password again"
-                    />
-                  </div>
-                  <button
-                    class="btn text-light w-100 mb-4"
-                    type="submit"
-                    style={{ background: "#5C0194" }}
-                  >
-                    Create Free Account
-                  </button>
+                    <div className="form-outline mb-4">
+                      <label className="form-label" htmlFor="typePasswordX-2">
+                        Password
+                      </label>
+                      <input
+                        type="password"
+                        name="password"
+                        value={password}
+                        className="form-control"
+                        placeholder="Type your password"
+                        onChange={handleOnChange}
+                      />
+                    </div>
+                    <button
+                      className="btn text-light w-100 mb-4"
+                      type="submit"
+                      style={{ background: "#5C0194" }}
+                    >
+                      Create Free Account
+                    </button>
+                  </form>
                   <div className="text-center">
                     <p>
                       Already have an account? <Link to="/login">Log In</Link>
@@ -87,6 +142,7 @@ const RegisterPage = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

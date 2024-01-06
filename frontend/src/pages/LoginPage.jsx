@@ -1,7 +1,63 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const LoginPage = () => {
+  const [inputValue, setInputValue] = useState({
+    email: "",
+    password: "",
+  });
+  const { email, password } = inputValue;
+  const navigate = useNavigate();
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setInputValue({
+      ...inputValue,
+      [name]: value,
+    });
+  };
+
+  const handleSuccess = (msg) => {
+    toast.success(msg, {
+      position: "bottom-right",
+    });
+  };
+
+  const handleError = (msg) => {
+    toast.error(msg, {
+      position: "bottom-right",
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post(
+        "http://localhost:4000/login",
+        { ...inputValue },
+        { withCredentials: true }
+      );
+      const { success, message } = data;
+      if (success) {
+        handleSuccess(message);
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      } else {
+        handleError(message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setInputValue({
+      ...inputValue,
+      email: "",
+      password: "",
+      username: "",
+    });
+  };
   return (
     <>
       <div
@@ -14,45 +70,47 @@ const LoginPage = () => {
           height: "100vh",
         }}
       >
-        <div class="container py-5 h-100">
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div className="container py-5 h-100">
+          <div className="row d-flex justify-content-center align-items-center h-100">
+            <div className="col-12 col-md-8 col-lg-6 col-xl-5">
               <div
-                class="card shadow-2-strong"
+                className="card shadow-2-strong"
                 style={{ borderRadius: "1rem" }}
               >
-                <div class="card-body p-4">
-                  <h4 class="mb-5 text-center">Log in to your account</h4>
-                  <div class="form-outline mb-4">
-                    <label class="form-label" for="typeEmailX-2">
-                      Username
-                    </label>
-                    <input
-                      type="email"
-                      id="typeEmailX-2"
-                      class="form-control"
-                      placeholder="Type your username"
-                    />
-                  </div>
+                <div className="card-body p-4">
+                  <h4 className="mb-5 text-center">Log in to your account</h4>
+                  <form onSubmit={handleSubmit}>
+                    <div className="form-outline mb-4">
+                      <label className="form-label">Email</label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={email}
+                        className="form-control"
+                        placeholder="Type your email"
+                        onChange={handleOnChange}
+                      />
+                    </div>
 
-                  <div class="form-outline mb-4">
-                    <label class="form-label" for="typePasswordX-2">
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      id="typePasswordX-2"
-                      class="form-control"
-                      placeholder="Type your password"
-                    />
-                  </div>
-                  <button
-                    class="btn text-light w-100 mb-4"
-                    type="submit"
-                    style={{ background: "#5C0194" }}
-                  >
-                    Login
-                  </button>
+                    <div className="form-outline mb-4">
+                      <label className="form-label">Password</label>
+                      <input
+                        type="password"
+                        name="password"
+                        value={password}
+                        className="form-control"
+                        placeholder="Type your password"
+                        onChange={handleOnChange}
+                      />
+                    </div>
+                    <button
+                      className="btn text-light w-100 mb-4"
+                      type="submit"
+                      style={{ background: "#5C0194" }}
+                    >
+                      Login
+                    </button>
+                  </form>
                   <div className="text-center mb-4">
                     <a href="">Forgot password?</a>
                   </div>
@@ -68,6 +126,7 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

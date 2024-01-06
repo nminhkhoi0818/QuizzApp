@@ -7,6 +7,7 @@ import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import TopicPage from "./pages/TopicPage";
 import PlayingPage from "./pages/PlayingPage";
+import "react-toastify/dist/ReactToastify.css";
 
 const router = createBrowserRouter([
   {
