@@ -42,13 +42,19 @@ const TopicPage = () => {
                 style={{ width: "80px", height: "80px", borderRadius: "50%" }}
               />
               <p className="h5 my-3">Leaderboard</p>
-              <div className="table-header d-flex justify-content-between w-100">
+              <div
+                className="table-header d-flex justify-content-between"
+                style={{ width: "90%" }}
+              >
                 <span>Username</span>
                 <span>Score</span>
               </div>
               {leaderboardData.map((el, index) => {
                 return (
-                  <div className="table-data d-flex justify-content-between w-100">
+                  <div
+                    className="table-data d-flex justify-content-between"
+                    style={{ width: "90%" }}
+                  >
                     <span>
                       {index + 1}. {el.username}
                     </span>

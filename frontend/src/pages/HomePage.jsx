@@ -35,6 +35,16 @@ const HomePage = () => {
     navigate("/login");
   };
 
+  const [topics, setTopics] = useState([]);
+
+  useEffect(() => {
+    const getAllTopics = async () => {
+      const { data } = await axios.get("http://localhost:4000/topics", {});
+      setTopics(data.topics);
+    };
+    getAllTopics();
+  }, []);
+
   return (
     <>
       <HeaderComponent username={username} onLogout={Logout} />
@@ -53,29 +63,21 @@ const HomePage = () => {
       <div className="container-fluid mb-3">
         <div className="container">
           <div className="topic-cards">
-            <Link to="/topic/Entertainment">
-              <div className="topic-card d-flex align-items-end d-flex align-items-end">
-                <div className="topic-name">ENTERTAINMENT</div>
-              </div>
-            </Link>
-            <div className="topic-card d-flex align-items-end">
-              <div className="topic-name">KPOP</div>
-            </div>
-            <div className="topic-card d-flex align-items-end">
-              <div className="topic-name">PETS</div>
-            </div>
-            <div className="topic-card d-flex align-items-end">
-              <div className="topic-name">FOOTBALL</div>
-            </div>
-            <div className="topic-card d-flex align-items-end">
-              <div className="topic-name">MUSIC</div>
-            </div>
-            <div className="topic-card d-flex align-items-end">
-              <div className="topic-name">HISTORY</div>
-            </div>
-            <div className="topic-card d-flex align-items-end">
-              <div className="topic-name">SCIENCE & NATURE</div>
-            </div>
+            {topics &&
+              topics.map((topic, index) => (
+                <Link to={`/topic/${topic.name}`}>
+                  <div className="topic-card d-flex align-items-end d-flex align-items-end">
+                    <div
+                      className="topic-name"
+                      style={{
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      {topic.name}
+                    </div>
+                  </div>
+                </Link>
+              ))}
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const HeaderComponent = ({ username, onLogout }) => {
   const [openAccount, setOpenAccount] = useState(false);
@@ -14,7 +15,9 @@ const HeaderComponent = ({ username, onLogout }) => {
         }}
       >
         <div className="container d-flex align-items-center text-light">
-          <img src="/images/logo.svg" alt="" style={{ marginRight: "auto" }} />
+          <Link to="/" style={{ marginRight: "auto" }}>
+            <img src="/images/logo.svg" alt="" />
+          </Link>
           <div
             className="account"
             onMouseEnter={() => setOpenAccount(true)}
@@ -32,7 +35,7 @@ const HeaderComponent = ({ username, onLogout }) => {
             </div>
             {openAccount && (
               <div className="account-content">
-                <a href="">Topic management</a>
+                <Link to="/admin/topic-management">Topic management</Link>
                 <a href="">My Profile</a>
                 <a onClick={onLogout} href="">
                   Log out

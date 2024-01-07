@@ -1,4 +1,5 @@
 const Question = require("../models/questionModel");
+const Topic = require("../models/topicModel");
 const User = require("../models/userModel");
 
 module.exports.addQuestion = async (req, res) => {
@@ -33,6 +34,16 @@ module.exports.addScore = async (req, res) => {
     res.status(200).json({ message: "Score added successfully" });
   } catch (error) {
     console.error("Error adding score:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+module.exports.getAllTopics = async (req, res) => {
+  try {
+    const topics = await Topic.find({}, "name");
+    res.status(200).json({ topics });
+  } catch (error) {
+    console.error("Error getting topics:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };

@@ -21,6 +21,7 @@ p {
 
 a {
   text-decoration: none;
+  color: #000;
 }
 
 .account-image {
@@ -176,4 +177,12 @@ a {
 
 .account-content a:hover {
   color: #ffae41;
+}
+
+.add-topic-btn {
+  padding: 6px 16px;
+  color: #fff;
+  border-radius: 4px;
+  background: #5c0194;
+  border: none;
 }
