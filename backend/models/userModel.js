@@ -1,6 +1,17 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
+const scoreSchema = new mongoose.Schema({
+  topic: {
+    type: String,
+    required: true,
+  },
+  score: {
+    type: Number,
+    required: true,
+  },
+});
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -18,6 +29,7 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: new Date(),
   },
+  scores: [scoreSchema],
 });
 
 userSchema.pre("save", async function () {
