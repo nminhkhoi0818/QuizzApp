@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import HeaderComponent from "../components/HeaderComponent";
 import FooterComponent from "../components/FooterComponent";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const AdminTopicList = () => {
   const [topics, setTopics] = useState([]);
@@ -29,7 +30,9 @@ const AdminTopicList = () => {
           <p>
             Home / <span style={{ color: "#FFAE41" }}>Topic Management</span>
           </p>
-          <button className="add-topic-btn">Create new topic</button>
+          <Link to={"/admin/topic-management/create"} className="add-topic-btn">
+            Create new topic
+          </Link>
         </div>
       </div>
       <div className="container-fluid">

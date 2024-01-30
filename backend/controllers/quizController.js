@@ -64,3 +64,34 @@ module.exports.getLeaderboard = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+module.exports.createTopic = async (req, res) => {
+  try {
+    const { topicName, topicPicture, questions } = req.body;
+    console.log(topicName);
+    console.log(topicPicture);
+    console.log(questions);
+
+    const newTopic = new Topic({
+      name: topicName,
+      picture: topicPicture,
+    });
+
+    await newTopic.save();
+
+    for (const { text, answers, correctAnswerIndex } of questions) {
+      const newQuestion = new Question({
+        topic: newTopic._id,
+        text,
+        options: answers,
+        correctOptionIndex: correctAnswerIndex,
+      });
+      await newQuestion.save();
+    }
+
+    res.status(201).json({ message: "Topic and questions added successfully" });
+  } catch (error) {
+    console.error("Error creating topic:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};

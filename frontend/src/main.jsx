@@ -9,6 +9,7 @@ import TopicPage from "./pages/TopicPage";
 import PlayingPage from "./pages/PlayingPage";
 import "react-toastify/dist/ReactToastify.css";
 import AdminTopicList from "./pages/AdminTopicList";
+import CreateNewTopic from "./pages/CreateNewTopic";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: "/admin/topic-management",
     element: <AdminTopicList />,
+  },
+  {
+    path: "/admin/topic-management/create",
+    element: <CreateNewTopic />,
   },
 ]);
 
