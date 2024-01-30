@@ -74,6 +74,7 @@ const TopicPage = () => {
               <Link
                 to={`/topic/${topicName}/playing`}
                 className="play-btn text-center"
+                style={{ width: "60%" }}
               >
                 PLAY NOW
               </Link>

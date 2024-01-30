@@ -89,10 +89,16 @@ a {
 
 .play-btn {
   padding: 12px;
-  width: 60%;
   color: #fff;
   border-radius: 4px;
   background: #5c0194;
+  border: none;
+}
+
+.white-btn {
+  padding: 12px;
+  border-radius: 4px;
+  background: #fff;
   border: none;
 }
 
@@ -261,4 +267,12 @@ a {
   margin-top: 16px;
   background: #5c0194;
   color: #fff;
+}
+
+.correct {
+  background-color: #70ba7c;
+}
+
+.wrong {
+  background-color: #c60f0f;
 }
