@@ -3,6 +3,7 @@ import HeaderComponent from "../components/HeaderComponent";
 import FooterComponent from "../components/FooterComponent";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const AdminTopicList = () => {
   const [topics, setTopics] = useState([]);
@@ -13,7 +14,32 @@ const AdminTopicList = () => {
       setTopics(data.topics);
     };
     getAllTopics();
-  }, []);
+  }, [topics]);
+
+  const handleSuccess = (msg) => {
+    toast.success(msg, {
+      position: "bottom-right",
+    });
+  };
+
+  const handleError = (msg) => {
+    toast.error(msg, {
+      position: "bottom-right",
+    });
+  };
+
+  const handleDeleteTopic = async (topicId) => {
+    const { data } = await axios.post(
+      `http://localhost:4000/delete-topic/${topicId}`,
+      { withCredentials: true }
+    );
+    const { success, message } = data;
+    if (success) {
+      handleSuccess(message);
+    } else {
+      handleError(message);
+    }
+  };
 
   return (
     <>
@@ -56,14 +82,21 @@ const AdminTopicList = () => {
                 >
                   {index + 1}. {topic.name}
                 </span>
-                <p style={{ textDecoration: "underline" }}>
-                  <a href="">Edit</a> | <a href="">Delete</a>
+                <p style={{ textDecoration: "underline", cursor: "pointer" }}>
+                  <Link to={`/admin/topic-management/edit/${topic.name}`}>
+                    Edit
+                  </Link>{" "}
+                  |{" "}
+                  <span onClick={() => handleDeleteTopic(topic._id)}>
+                    Delete
+                  </span>
                 </p>
               </div>
             ))}
         </div>
       </div>
       <FooterComponent />
+      <ToastContainer />
     </>
   );
 };

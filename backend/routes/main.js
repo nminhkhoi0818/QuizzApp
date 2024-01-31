@@ -3,8 +3,9 @@ const {
   getAllTopics,
   getLeaderboard,
   createTopic,
-  getQuestionsByTopicId,
   getQuestionsByTopicName,
+  editTopic,
+  deleteTopic,
 } = require("../controllers/quizController");
 const { userVerification } = require("../middlewares/authMiddleware");
 const router = require("express").Router();
@@ -17,6 +18,8 @@ router.post("/login", Login);
 // Topics
 router.get("/topics", getAllTopics);
 router.post("/create-topic", createTopic);
+router.post("/edit-topic", editTopic);
+router.post("/delete-topic/:id", deleteTopic);
 
 // Questions
 router.get("/get-question/:topicName", getQuestionsByTopicName);

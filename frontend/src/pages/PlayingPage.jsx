@@ -12,6 +12,8 @@ const PlayingPage = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [score, setScore] = useState(0);
+  const [isOptionClickable, setIsOptionClickable] = useState(true);
+
   let { topicName } = useParams();
   const optionsLetter = ["A.", "B.", "C.", "D."];
 
@@ -63,18 +65,23 @@ const PlayingPage = () => {
       setScore(score + 10);
     }
     setIsCorrect(isAnswerCorrect);
+    setIsOptionClickable(false);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       setCurrentQuestionIndex((prevIndex) =>
         prevIndex < questions.length - 1 ? prevIndex + 1 : prevIndex
       );
+      if (currentQuestionIndex === questions.length - 1) {
+        const { data } = await axios.post(
+          "http://localhost:4000/submit-score",
+          {}
+        );
+        setQuizCompleted(true);
+      }
 
       setIsCorrect(null);
+      setIsOptionClickable(true);
     }, 3000);
-
-    if (currentQuestionIndex === questions.length - 1) {
-      setQuizCompleted(true);
-    }
   };
 
   return (
@@ -119,6 +126,12 @@ const PlayingPage = () => {
                   to={`/topic/${topicName}/playing`}
                   className="play-btn text-center mb-4"
                   style={{ width: "100%" }}
+                  onClick={() => {
+                    setQuizCompleted(false);
+                    setCurrentQuestionIndex(0);
+                    setRemainingTime(60);
+                    setScore(0);
+                  }}
                 >
                   PLAY AGAIN
                 </Link>
@@ -166,7 +179,9 @@ const PlayingPage = () => {
                               : ""
                           }`}
                           style={{ cursor: "pointer" }}
-                          onClick={() => handleOptionClick(option)}
+                          onClick={() =>
+                            isOptionClickable && handleOptionClick(option)
+                          }
                         >
                           <span
                             style={{

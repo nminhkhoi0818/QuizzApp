@@ -1,15 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link, useParams } from "react-router-dom";
 import HeaderComponent from "../components/HeaderComponent";
 import FooterComponent from "../components/FooterComponent";
-import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
 
-const CreateNewTopic = () => {
-  const [topicName, setTopicName] = useState("");
+const EditTopicPage = () => {
+  const [questions, setQuestions] = useState([]);
+  const { topicName } = useParams();
   const [topicPicture, setTopicPicture] = useState(null);
-  const [questions, setQuestions] = useState([{ text: "", options: [] }]);
-  const navigate = useNavigate();
+  useEffect(() => {
+    const getQuestionsByTopicName = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:4000/get-question/${topicName}`
+        );
+
+        if (response.status === 200) {
+          const fetchedQuestions = response.data.questions;
+          setQuestions(fetchedQuestions);
+        } else {
+          console.error(
+            "API Request failed:",
+            response.status,
+            response.statusText
+          );
+        }
+      } catch (error) {
+        console.error("Error handling API request:", error.message);
+      }
+    };
+
+    getQuestionsByTopicName();
+  }, []);
+
   const options = ["A", "B", "C", "D"];
 
   const handleAddQuestion = () => {
@@ -40,39 +63,20 @@ const CreateNewTopic = () => {
     setQuestions(updatedQuestions);
   };
 
-  const handleSuccess = (msg) => {
-    toast.success(msg, {
-      position: "bottom-right",
-    });
-  };
-
-  const handleError = (msg) => {
-    toast.error(msg, {
-      position: "bottom-right",
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(questions);
     const formData = {
       topicName,
       topicPicture,
       questions,
     };
     const { data } = await axios.post(
-      "http://localhost:4000/create-topic",
+      "http://localhost:4000/edit-topic",
       formData,
       { withCredentials: true }
     );
-    const { success, message } = data;
-    if (success) {
-      handleSuccess(message);
-      setTimeout(() => {
-        navigate("/admin/topic-management");
-      }, 1000);
-    } else {
-      handleError(message);
-    }
+    console.log(data.message);
   };
 
   return (
@@ -106,7 +110,7 @@ const CreateNewTopic = () => {
                 className="form-control"
                 placeholder="Enter a topic"
                 value={topicName}
-                onChange={(e) => setTopicName(e.target.value)}
+                disabled
               />
             </div>
             <div className="form-group mb-4">
@@ -120,13 +124,13 @@ const CreateNewTopic = () => {
                 onChange={(e) => setTopicPicture(e.target.files[0])}
               />
             </div>
-            {questions.map((question, questionIndex) => (
+            {questions?.map((question, questionIndex) => (
               <div className="question-form mb-5" key={questionIndex}>
                 <div className="question-header d-flex justify-content-between align-items-center mb-1">
                   <h3>QUESTION {questionIndex + 1}</h3>
                   <span
                     className="text-muted"
-                    style={{ textDecoration: "underline", cursor: "pointer" }}
+                    style={{ textDecoration: "underline" }}
                     onClick={() => handleDeleteQuestion(questionIndex)}
                   >
                     Delete this question
@@ -180,7 +184,7 @@ const CreateNewTopic = () => {
             ))}
             <div
               className="fw-bold fs-5"
-              style={{ textDecoration: "underline", cursor: "pointer" }}
+              style={{ textDecoration: "underline" }}
               onClick={handleAddQuestion}
             >
               Add a new answer
@@ -192,9 +196,8 @@ const CreateNewTopic = () => {
         </div>
       </div>
       <FooterComponent />
-      <ToastContainer />
     </>
   );
 };
 
-export default CreateNewTopic;
+export default EditTopicPage;
