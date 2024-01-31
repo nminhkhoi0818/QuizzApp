@@ -1,8 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import axios from "axios";
 
-const HeaderComponent = ({ username, onLogout }) => {
+const HeaderComponent = () => {
   const [openAccount, setOpenAccount] = useState(false);
+  const navigate = useNavigate();
+  const [cookies, removeCookie] = useCookies([]);
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const verifyCookie = async () => {
+      if (!cookies.token) {
+        navigate("/login");
+      }
+      const { data } = await axios.post(
+        "http://localhost:4000",
+        {},
+        { withCredentials: true }
+      );
+      const { status, user } = data;
+      setUsername(user);
+      return status ? "" : (removeCookie("token"), navigate("/login"));
+    };
+    verifyCookie();
+  }, [cookies, navigate, removeCookie]);
+
+  const Logout = () => {
+    removeCookie("token");
+    navigate("/login");
+  };
+
   return (
     <>
       <div
@@ -28,7 +57,7 @@ const HeaderComponent = ({ username, onLogout }) => {
                 Hi, <span>{username}</span>
               </p>
               <img
-                src="/images/girl.jpg"
+                src="/images/shiba.png"
                 alt=""
                 className="account-image ms-4"
               />
@@ -37,7 +66,7 @@ const HeaderComponent = ({ username, onLogout }) => {
               <div className="account-content">
                 <Link to="/admin/topic-management">Topic management</Link>
                 <a href="">My Profile</a>
-                <a onClick={onLogout} href="">
+                <a onClick={Logout} href="">
                   Log out
                 </a>
               </div>

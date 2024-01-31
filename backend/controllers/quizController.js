@@ -34,12 +34,20 @@ module.exports.getAllTopics = async (req, res) => {
 module.exports.getLeaderboard = async (req, res) => {
   try {
     const { topic } = req.params;
-    const leaderboard = await User.find(
-      { "scores.topic": topic },
-      { username: 1, scores: { $elemMatch: { topic } } }
-    )
-      .sort({ "scores.score": -1 })
-      .limit(10);
+    const leaderboard = await User.aggregate([
+      { $match: { "scores.topic": topic } },
+      { $unwind: "$scores" },
+      { $match: { "scores.topic": topic } },
+      { $sort: { "scores.score": -1 } },
+      { $limit: 10 },
+      {
+        $group: {
+          _id: "$_id",
+          username: { $first: "$username" },
+          score: { $first: "$scores.score" },
+        },
+      },
+    ]);
 
     res.status(200).json({ leaderboard });
   } catch (error) {

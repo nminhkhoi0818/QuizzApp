@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import HeaderComponent from "../components/HeaderComponent";
 import FooterComponent from "../components/FooterComponent";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import { Link, useParams } from "react-router-dom";
 
 const PlayingPage = () => {
@@ -13,6 +15,26 @@ const PlayingPage = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [score, setScore] = useState(0);
   const [isOptionClickable, setIsOptionClickable] = useState(true);
+  const navigate = useNavigate();
+  const [cookies, removeCookie] = useCookies([]);
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const verifyCookie = async () => {
+      if (!cookies.token) {
+        navigate("/login");
+      }
+      const { data } = await axios.post(
+        "http://localhost:4000",
+        {},
+        { withCredentials: true }
+      );
+      const { status, user } = data;
+      setUsername(user);
+      return status ? "" : (removeCookie("token"), navigate("/login"));
+    };
+    verifyCookie();
+  }, [cookies, navigate, removeCookie]);
 
   let { topicName } = useParams();
   const optionsLetter = ["A.", "B.", "C.", "D."];
@@ -72,17 +94,31 @@ const PlayingPage = () => {
         prevIndex < questions.length - 1 ? prevIndex + 1 : prevIndex
       );
       if (currentQuestionIndex === questions.length - 1) {
-        const { data } = await axios.post(
-          "http://localhost:4000/submit-score",
-          {}
-        );
         setQuizCompleted(true);
       }
 
       setIsCorrect(null);
       setIsOptionClickable(true);
+      setSelectedOption("");
     }, 3000);
   };
+
+  useEffect(() => {
+    const handleSubmitScore = async () => {
+      if (quizCompleted) {
+        const { data } = await axios.post(
+          "http://localhost:4000/submit-score",
+          {
+            username,
+            score,
+            topic: topicName,
+          }
+        );
+        // console.log(data.message);
+      }
+    };
+    handleSubmitScore();
+  }, [quizCompleted]);
 
   return (
     <>
@@ -113,15 +149,9 @@ const PlayingPage = () => {
             {quizCompleted ? (
               <div className="d-flex flex-column align-items-center justify-content-center py-5">
                 <h1 className="mb-3">QUIZ COMPLETE</h1>
-                <h2 className="mb-3" style={{ color: "#FFAE41" }}>
+                <h2 className="mb-5" style={{ color: "#FFAE41" }}>
                   SCORE: {score}
                 </h2>
-                <p className="mb-2" style={{ fontSize: "18px" }}>
-                  Personal Best pts
-                </p>
-                <p className="mb-5" style={{ fontSize: "18px" }}>
-                  Your Rank:{" "}
-                </p>
                 <Link
                   to={`/topic/${topicName}/playing`}
                   className="play-btn text-center mb-4"

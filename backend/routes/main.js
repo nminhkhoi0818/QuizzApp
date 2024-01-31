@@ -6,6 +6,7 @@ const {
   getQuestionsByTopicName,
   editTopic,
   deleteTopic,
+  submitScore,
 } = require("../controllers/quizController");
 const { userVerification } = require("../middlewares/authMiddleware");
 const router = require("express").Router();
@@ -24,6 +25,10 @@ router.post("/delete-topic/:id", deleteTopic);
 // Questions
 router.get("/get-question/:topicName", getQuestionsByTopicName);
 
+// Leaderboard
 router.get("/leaderboard/:topic", getLeaderboard);
+
+// Score
+router.post("/submit-score", submitScore);
 
 module.exports = router;

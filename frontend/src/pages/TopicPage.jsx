@@ -1,22 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import HeaderComponent from "../components/HeaderComponent";
 import FooterComponent from "../components/FooterComponent";
 import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 
 const TopicPage = () => {
-  let { topicName } = useParams();
-  let leaderboardData = [
-    { username: "Minh Khoi", score: 1680 },
-    { username: "Huu Phuc", score: 1213 },
-    { username: "Sieu Dat", score: 1210 },
-    { username: "sieucapvippro", score: 1111 },
-    { username: "dep_trai_co_gi_sai", score: 1109 },
-    { username: "chua_uong_da_sai", score: 1000 },
-    { username: "username_1", score: 900 },
-    { username: "username_2", score: 867 },
-    { username: "username_3", score: 635 },
-    { username: "username_4", score: 333 },
-  ];
+  const { topicName } = useParams();
+  const [leaderboardData, setLeaderboardData] = useState([]);
+
+  useEffect(() => {
+    const getLeaderboard = async () => {
+      const { data } = await axios.get(
+        `http://localhost:4000/leaderboard/${topicName}`,
+        {}
+      );
+      setLeaderboardData(data.leaderboard);
+    };
+    getLeaderboard();
+  }, []);
   return (
     <>
       <HeaderComponent />
@@ -52,6 +53,7 @@ const TopicPage = () => {
               {leaderboardData.map((el, index) => {
                 return (
                   <div
+                    key={index}
                     className="table-data d-flex justify-content-between"
                     style={{ width: "90%" }}
                   >

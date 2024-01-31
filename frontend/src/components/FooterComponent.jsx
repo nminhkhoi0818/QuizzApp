@@ -11,7 +11,7 @@ const FooterComponent = () => {
           background: "#FFAE41",
         }}
       >
-        Copyright 2024 STEAM forVietnam
+        Copyright 2024 Nguyen Minh Khoi - S4V
       </div>
     </>
   );

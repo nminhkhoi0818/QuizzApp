@@ -130,7 +130,7 @@ const EditTopicPage = () => {
                   <h3>QUESTION {questionIndex + 1}</h3>
                   <span
                     className="text-muted"
-                    style={{ textDecoration: "underline" }}
+                    style={{ textDecoration: "underline", cursor: "pointer" }}
                     onClick={() => handleDeleteQuestion(questionIndex)}
                   >
                     Delete this question
@@ -184,7 +184,7 @@ const EditTopicPage = () => {
             ))}
             <div
               className="fw-bold fs-5"
-              style={{ textDecoration: "underline" }}
+              style={{ textDecoration: "underline", cursor: "pointer" }}
               onClick={handleAddQuestion}
             >
               Add a new answer
