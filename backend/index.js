@@ -24,6 +24,13 @@ app.use(cookieParser());
 
 app.use(express.json());
 
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://quizzapppp.onrender.com"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+// app.use(cors(corsOptions));
 
 app.use("/", authRoute);
