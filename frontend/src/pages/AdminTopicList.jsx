@@ -30,7 +30,7 @@ const AdminTopicList = () => {
 
   const handleDeleteTopic = async (topicId) => {
     const { data } = await axios.post(
-      `http://localhost:4000/delete-topic/${topicId}`,
+      `https://quizzapp-0h5c.onrender.com/delete-topic/${topicId}`,
       { withCredentials: true }
     );
     const { success, message } = data;

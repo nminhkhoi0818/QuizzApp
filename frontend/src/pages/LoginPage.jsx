@@ -35,7 +35,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/login",
+        "https://quizzapp-0h5c.onrender.com/login",
         { ...inputValue },
         { withCredentials: true }
       );

@@ -25,7 +25,7 @@ const PlayingPage = () => {
         navigate("/login");
       }
       const { data } = await axios.post(
-        "http://localhost:4000",
+        "https://quizzapp-0h5c.onrender.com",
         {},
         { withCredentials: true }
       );

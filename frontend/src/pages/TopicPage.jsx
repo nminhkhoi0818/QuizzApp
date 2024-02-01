@@ -11,7 +11,7 @@ const TopicPage = () => {
   useEffect(() => {
     const getLeaderboard = async () => {
       const { data } = await axios.get(
-        `http://localhost:4000/leaderboard/${topicName}`,
+        `https://quizzapp-0h5c.onrender.com/leaderboard/${topicName}`,
         {}
       );
       setLeaderboardData(data.leaderboard);

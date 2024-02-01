@@ -36,7 +36,7 @@ const RegisterPage = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/signup",
+        "https://quizzapp-0h5c.onrender.com/signup",
         { ...inputValue },
         { withCredentials: true }
       );

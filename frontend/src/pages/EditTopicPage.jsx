@@ -22,7 +22,7 @@ const EditTopicPage = () => {
     const getQuestionsByTopicName = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/get-question/${topicName}`
+          `https://quizzapp-0h5c.onrender.com/get-question/${topicName}`
         );
 
         if (response.status === 200) {

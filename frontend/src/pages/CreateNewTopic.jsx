@@ -66,7 +66,7 @@ const CreateNewTopic = () => {
       questions,
     };
     const { data } = await axios.post(
-      "http://localhost:4000/create-topic",
+      "https://quizzapp-0h5c.onrender.com/create-topic",
       formData,
       { withCredentials: true }
     );
