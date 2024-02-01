@@ -10,7 +10,10 @@ const AdminTopicList = () => {
 
   useEffect(() => {
     const getAllTopics = async () => {
-      const { data } = await axios.get("http://localhost:4000/topics", {});
+      const { data } = await axios.get(
+        "https://quizzapp-0h5c.onrender.com/topics",
+        {}
+      );
       setTopics(data.topics);
     };
     getAllTopics();

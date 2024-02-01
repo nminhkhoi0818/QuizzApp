@@ -95,7 +95,7 @@ const EditTopicPage = () => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/edit-topic",
+        "https://quizzapp-0h5c.onrender.com/edit-topic",
         formData,
         { withCredentials: true }
       );
