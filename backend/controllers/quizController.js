@@ -2,28 +2,9 @@ const Question = require("../models/questionModel");
 const Topic = require("../models/topicModel");
 const User = require("../models/userModel");
 
-module.exports.addScore = async (req, res) => {
-  try {
-    const { username, topic, score } = req.body;
-    const user = await User.findOne({ username });
-
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    user.scores.push({ topic, score });
-    await user.save();
-
-    res.status(200).json({ message: "Score added successfully" });
-  } catch (error) {
-    console.error("Error adding score:", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
 module.exports.getAllTopics = async (req, res) => {
   try {
-    const topics = await Topic.find({}, "name");
+    const topics = await Topic.find({});
     res.status(200).json({ topics });
   } catch (error) {
     console.error("Error getting topics:", error.message);
@@ -58,11 +39,11 @@ module.exports.getLeaderboard = async (req, res) => {
 
 module.exports.createTopic = async (req, res) => {
   try {
-    const { topicName, topicPicture, questions } = req.body;
+    const { topicName, topicPictureURL, questions } = req.body;
 
     const newTopic = new Topic({
       name: topicName,
-      picture: topicPicture,
+      picture: topicPictureURL,
     });
 
     await newTopic.save();
@@ -108,7 +89,7 @@ module.exports.getQuestionsByTopicName = async (req, res) => {
 
 module.exports.editTopic = async (req, res) => {
   try {
-    const { topicName, topicPicture, questions } = req.body;
+    const { topicName, topicPictureURL, questions } = req.body;
 
     const existingTopic = await Topic.findOne({ name: topicName });
 
@@ -116,9 +97,9 @@ module.exports.editTopic = async (req, res) => {
       return res.status(404).json({ error: "Topic not found" });
     }
 
-    // await Topic.findByIdAndUpdate(existingTopic._id, {
-    //   picture: topicPicture,
-    // });
+    await Topic.findByIdAndUpdate(existingTopic._id, {
+      picture: topicPictureURL,
+    });
 
     await Question.deleteMany({ topic: existingTopic._id });
 

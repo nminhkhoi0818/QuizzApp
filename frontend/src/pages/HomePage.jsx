@@ -38,7 +38,13 @@ const HomePage = () => {
             {topics &&
               topics.map((topic, index) => (
                 <Link to={`/topic/${topic.name}`} key={index}>
-                  <div className="topic-card d-flex align-items-end d-flex align-items-end">
+                  <div
+                    className="topic-card d-flex align-items-end d-flex align-items-end"
+                    style={{
+                      background: `url(${topic.picture}) no-repeat center`,
+                      backgroundSize: "cover",
+                    }}
+                  >
                     <div
                       className="topic-name"
                       style={{

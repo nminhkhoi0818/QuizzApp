@@ -4,6 +4,8 @@ import HeaderComponent from "../components/HeaderComponent";
 import FooterComponent from "../components/FooterComponent";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import storage from "../firebaseConfig.js";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const CreateNewTopic = () => {
   const [topicName, setTopicName] = useState("");
@@ -11,6 +13,10 @@ const CreateNewTopic = () => {
   const [questions, setQuestions] = useState([{ text: "", options: [] }]);
   const navigate = useNavigate();
   const options = ["A", "B", "C", "D"];
+  const [topicPictureURL, setTopicPictureURL] = useState(
+    "https://firebasestorage.googleapis.com/v0/b/quizzapp-a8632.appspot.com/o/files%2Fdefault.jpg?alt=media&token=63dfcb91-a944-4e32-adaf-6e1e7f7d7a95"
+  );
+  const [percent, setPercent] = useState(0);
 
   const handleAddQuestion = () => {
     setQuestions([...questions, { text: "", options: [] }]);
@@ -56,7 +62,7 @@ const CreateNewTopic = () => {
     e.preventDefault();
     const formData = {
       topicName,
-      topicPicture,
+      topicPictureURL,
       questions,
     };
     const { data } = await axios.post(
@@ -73,6 +79,28 @@ const CreateNewTopic = () => {
     } else {
       handleError(message);
     }
+  };
+
+  const handleUploadImage = async () => {
+    const storageRef = ref(storage, `/files/${topicPicture.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, topicPicture);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const percent = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+
+        setPercent(percent);
+      },
+      (err) => console.log(err),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          setTopicPictureURL(url);
+        });
+      }
+    );
   };
 
   return (
@@ -119,6 +147,14 @@ const CreateNewTopic = () => {
                 id="formFile"
                 onChange={(e) => setTopicPicture(e.target.files[0])}
               />
+              <p>{percent} %</p>
+              <button
+                className="save-btn"
+                type="button"
+                onClick={handleUploadImage}
+              >
+                Save image
+              </button>
             </div>
             {questions.map((question, questionIndex) => (
               <div className="question-form mb-5" key={questionIndex}>

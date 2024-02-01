@@ -3,11 +3,21 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import HeaderComponent from "../components/HeaderComponent";
 import FooterComponent from "../components/FooterComponent";
+import storage from "../firebaseConfig.js";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const EditTopicPage = () => {
   const [questions, setQuestions] = useState([]);
   const { topicName } = useParams();
   const [topicPicture, setTopicPicture] = useState(null);
+  const [topicPictureURL, setTopicPictureURL] = useState(
+    "https://firebasestorage.googleapis.com/v0/b/quizzapp-a8632.appspot.com/o/files%2Fdefault.jpg?alt=media&token=63dfcb91-a944-4e32-adaf-6e1e7f7d7a95"
+  );
+  const [percent, setPercent] = useState(0);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const getQuestionsByTopicName = async () => {
       try {
@@ -63,20 +73,66 @@ const EditTopicPage = () => {
     setQuestions(updatedQuestions);
   };
 
+  const handleSuccess = (msg) => {
+    toast.success(msg, {
+      position: "bottom-right",
+    });
+  };
+
+  const handleError = (msg) => {
+    toast.error(msg, {
+      position: "bottom-right",
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(questions);
     const formData = {
       topicName,
-      topicPicture,
+      topicPictureURL,
       questions,
     };
-    const { data } = await axios.post(
-      "http://localhost:4000/edit-topic",
-      formData,
-      { withCredentials: true }
+
+    try {
+      const { data } = await axios.post(
+        "http://localhost:4000/edit-topic",
+        formData,
+        { withCredentials: true }
+      );
+      const { success, message } = data;
+      if (success) {
+        handleSuccess(message);
+        setTimeout(() => {
+          navigate("/admin/topic-management");
+        }, 1000);
+      } else {
+        handleError(message);
+      }
+    } catch (error) {
+      console.error("Error while making the post request:", error);
+    }
+  };
+
+  const handleUploadImage = async () => {
+    const storageRef = ref(storage, `/files/${topicPicture.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, topicPicture);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const percent = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+
+        setPercent(percent);
+      },
+      (err) => console.log(err),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          setTopicPictureURL(url);
+        });
+      }
     );
-    console.log(data.message);
   };
 
   return (
@@ -93,13 +149,13 @@ const EditTopicPage = () => {
         <div className="container d-flex justify-content-between align-items-center">
           <p>
             Home / <span>Topic Management</span> /
-            <span style={{ color: "#FFAE41" }}> Create new topic</span>
+            <span style={{ color: "#FFAE41" }}> Edit topic</span>
           </p>
         </div>
       </div>
       <div className="container-fluid py-4">
         <div className="container d-flex flex-column justify-content-center align-items-center">
-          <h1 className="mb-4">Create new topic</h1>
+          <h1 className="mb-4">Edit topic</h1>
           <form action="" className="quiz-form" onSubmit={handleSubmit}>
             <div className="form-group mb-3">
               <label htmlFor="" className="mb-2">
@@ -123,6 +179,14 @@ const EditTopicPage = () => {
                 id="formFile"
                 onChange={(e) => setTopicPicture(e.target.files[0])}
               />
+              <p>{percent} %</p>
+              <button
+                className="save-btn"
+                type="button"
+                onClick={handleUploadImage}
+              >
+                Save image
+              </button>
             </div>
             {questions?.map((question, questionIndex) => (
               <div className="question-form mb-5" key={questionIndex}>
@@ -196,6 +260,7 @@ const EditTopicPage = () => {
         </div>
       </div>
       <FooterComponent />
+      <ToastContainer />
     </>
   );
 };
