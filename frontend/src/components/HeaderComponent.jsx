@@ -7,11 +7,12 @@ import axios from "axios";
 const HeaderComponent = () => {
   const [openAccount, setOpenAccount] = useState(false);
   const navigate = useNavigate();
-  const [cookies, removeCookie] = useCookies([]);
+  const [cookies, removeCookie] = useCookies("token");
   const [username, setUsername] = useState("");
 
   useEffect(() => {
     const verifyCookie = async () => {
+      console.log(cookies);
       if (!cookies.token) {
         navigate("/login");
       }
