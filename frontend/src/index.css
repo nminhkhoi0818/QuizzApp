@@ -184,6 +184,14 @@ a {
   color: #ffae41;
 }
 
+.logout {
+  color: #000;
+}
+
+.logout:hover {
+  color: #ffae41;
+}
+
 .add-topic-btn {
   padding: 6px 16px;
   color: #fff;

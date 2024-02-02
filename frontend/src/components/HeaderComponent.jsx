@@ -23,7 +23,7 @@ const HeaderComponent = () => {
       }
     };
     getUser();
-  }, []);
+  }, [navigate]);
 
   const Logout = async () => {
     await axios.post(
@@ -68,7 +68,7 @@ const HeaderComponent = () => {
               <div className="account-content">
                 <Link to="/admin/topic-management">Topic management</Link>
                 <a href="">My Profile</a>
-                <a onClick={Logout} href="">
+                <a onClick={Logout} className="logout">
                   Log out
                 </a>
               </div>

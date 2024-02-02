@@ -51,6 +51,7 @@ module.exports.Login = async (req, res, next) => {
 };
 
 module.exports.Logout = async (req, res) => {
+  console.log("Hello");
   res.clearCookie("token");
   return res.sendStatus(204);
 };
