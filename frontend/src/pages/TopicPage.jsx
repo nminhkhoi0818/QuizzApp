@@ -32,7 +32,10 @@ const TopicPage = () => {
       >
         <div className="container" style={{ color: "#fff" }}>
           <div className="mb-4">
-            Home / <span style={{ color: "#FFAE41" }}>{topicName}</span>
+            <Link to={"/"} style={{ color: "#ffffff" }}>
+              Home
+            </Link>{" "}
+            / <span style={{ color: "#FFAE41" }}>{topicName}</span>
           </div>
           <div className="dashboard d-flex justify-content-between">
             <div className="leaderboard-section d-flex flex-column justify-content-center align-items-center">

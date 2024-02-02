@@ -111,13 +111,12 @@ const LoginPage = () => {
                       Login
                     </button>
                   </form>
-                  <div className="text-center mb-4">
-                    <a href="">Forgot password?</a>
-                  </div>
                   <div className="text-center">
                     <p>
                       Don’t have an account?{" "}
-                      <Link to="/register">Sign Up Now</Link>
+                      <Link to="/register" style={{ color: "#FFAE41" }}>
+                        Sign Up Now
+                      </Link>
                     </p>
                   </div>
                 </div>

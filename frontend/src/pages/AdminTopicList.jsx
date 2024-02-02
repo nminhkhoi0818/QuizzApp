@@ -57,7 +57,10 @@ const AdminTopicList = () => {
       >
         <div className="container d-flex justify-content-between align-items-center">
           <p>
-            Home / <span style={{ color: "#FFAE41" }}>Topic Management</span>
+            <Link to={"/"} style={{ color: "#000000" }}>
+              Home
+            </Link>{" "}
+            / <span style={{ color: "#FFAE41" }}>Topic Management</span>
           </p>
           <Link to={"/admin/topic-management/create"} className="add-topic-btn">
             Create new topic

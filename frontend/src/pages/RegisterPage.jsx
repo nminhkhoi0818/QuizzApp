@@ -129,7 +129,10 @@ const RegisterPage = () => {
                   </form>
                   <div className="text-center">
                     <p>
-                      Already have an account? <Link to="/login">Log In</Link>
+                      Already have an account?{" "}
+                      <Link to="/login" style={{ color: "#FFAE41" }}>
+                        Log In
+                      </Link>
                     </p>
                   </div>
                 </div>

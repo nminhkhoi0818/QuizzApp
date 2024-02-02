@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import HeaderComponent from "../components/HeaderComponent";
 import FooterComponent from "../components/FooterComponent";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import storage from "../firebaseConfig.js";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -116,7 +116,10 @@ const CreateNewTopic = () => {
       >
         <div className="container d-flex justify-content-between align-items-center">
           <p>
-            Home / <span>Topic Management</span> /
+            <Link to={"/"} style={{ color: "#000000" }}>
+              Home
+            </Link>{" "}
+            / <Link to={"/admin/topic-management"}>Topic Management</Link> /
             <span style={{ color: "#FFAE41" }}> Create new topic</span>
           </p>
         </div>

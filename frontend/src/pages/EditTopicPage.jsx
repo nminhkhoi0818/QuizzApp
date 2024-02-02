@@ -148,7 +148,10 @@ const EditTopicPage = () => {
       >
         <div className="container d-flex justify-content-between align-items-center">
           <p>
-            Home / <span>Topic Management</span> /
+            <Link to={"/"} style={{ color: "#000000" }}>
+              Home
+            </Link>{" "}
+            / <Link to={"/admin/topic-management"}>Topic Management</Link> /
             <span style={{ color: "#FFAE41" }}> Edit topic</span>
           </p>
         </div>

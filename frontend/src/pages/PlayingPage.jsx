@@ -3,7 +3,6 @@ import HeaderComponent from "../components/HeaderComponent";
 import FooterComponent from "../components/FooterComponent";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import { Link, useParams } from "react-router-dom";
 
 const PlayingPage = () => {
@@ -16,25 +15,24 @@ const PlayingPage = () => {
   const [score, setScore] = useState(0);
   const [isOptionClickable, setIsOptionClickable] = useState(true);
   const navigate = useNavigate();
-  const [cookies, removeCookie] = useCookies([]);
   const [username, setUsername] = useState("");
 
   useEffect(() => {
-    const verifyCookie = async () => {
-      if (!cookies.token) {
-        navigate("/login");
-      }
+    const getUser = async () => {
       const { data } = await axios.post(
         "https://quizzapp-0h5c.onrender.com",
         {},
         { withCredentials: true }
       );
-      const { status, user } = data;
-      setUsername(user);
-      return status ? "" : (removeCookie("token"), navigate("/login"));
+      const { success, user } = data;
+      if (success) {
+        setUsername(user);
+      } else {
+        navigate("/login");
+      }
     };
-    verifyCookie();
-  }, [cookies, navigate, removeCookie]);
+    getUser();
+  }, []);
 
   let { topicName } = useParams();
   const optionsLetter = ["A.", "B.", "C.", "D."];
@@ -106,14 +104,11 @@ const PlayingPage = () => {
   useEffect(() => {
     const handleSubmitScore = async () => {
       if (quizCompleted) {
-        const { data } = await axios.post(
-          "https://quizzapp-0h5c.onrender.com/submit-score",
-          {
-            username,
-            score,
-            topic: topicName,
-          }
-        );
+        await axios.post("https://quizzapp-0h5c.onrender.com/submit-score", {
+          username,
+          score,
+          topic: topicName,
+        });
       }
     };
     handleSubmitScore();
@@ -133,8 +128,14 @@ const PlayingPage = () => {
       >
         <div className="container" style={{ color: "#fff" }}>
           <div className="mb-4">
-            Home / <span>{topicName}</span> /{" "}
-            <span style={{ color: "#FFAE41" }}>Playing</span>
+            <Link to={"/"} style={{ color: "#ffffff" }}>
+              Home
+            </Link>{" "}
+            /{" "}
+            <Link to={`/topic/${topicName}`} style={{ color: "#ffffff" }}>
+              {topicName}
+            </Link>{" "}
+            / <span style={{ color: "#FFAE41" }}>Playing</span>
           </div>
           <div className="main-content d-flex flex-column justify-content-center align-items-center py-5">
             <img src="/images/icon-1.png" className="top-left-icon" alt="" />
