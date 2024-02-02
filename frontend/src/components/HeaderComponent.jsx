@@ -1,35 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import axios from "axios";
 
 const HeaderComponent = () => {
   const [openAccount, setOpenAccount] = useState(false);
   const navigate = useNavigate();
-  const [cookies, removeCookie] = useCookies("token");
   const [username, setUsername] = useState("");
 
   useEffect(() => {
-    const verifyCookie = async () => {
-      console.log(cookies);
-      if (!cookies.token) {
-        navigate("/login");
-      }
+    const getUser = async () => {
       const { data } = await axios.post(
         "https://quizzapp-0h5c.onrender.com",
         {},
         { withCredentials: true }
       );
-      const { status, user } = data;
-      setUsername(user);
-      return status ? "" : (removeCookie("token"), navigate("/login"));
+      const { success, user } = data;
+      if (success) {
+        setUsername(user);
+      } else {
+        navigate("/login");
+      }
     };
-    verifyCookie();
-  }, [cookies, navigate, removeCookie]);
+    getUser();
+  }, []);
 
-  const Logout = () => {
-    removeCookie("token");
+  const Logout = async () => {
+    await axios.post(
+      "https://quizzapp-0h5c.onrender.com/logout",
+      {},
+      { withCredentials: true }
+    );
     navigate("/login");
   };
 

@@ -114,7 +114,6 @@ const PlayingPage = () => {
             topic: topicName,
           }
         );
-        // console.log(data.message);
       }
     };
     handleSubmitScore();

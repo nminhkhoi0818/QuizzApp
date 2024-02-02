@@ -12,8 +12,7 @@ const HomePage = () => {
   useEffect(() => {
     const getAllTopics = async () => {
       const { data } = await axios.get(
-        "https://quizzapp-0h5c.onrender.com/topics",
-        {}
+        "https://quizzapp-0h5c.onrender.com/topics"
       );
       setTopics(data.topics);
     };

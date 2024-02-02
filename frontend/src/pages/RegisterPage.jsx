@@ -10,7 +10,6 @@ const RegisterPage = () => {
     username: "",
   });
   const { email, password, username } = inputValue;
-  const navigate = useNavigate();
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -43,9 +42,6 @@ const RegisterPage = () => {
       const { success, message } = data;
       if (success) {
         handleSuccess(message);
-        setTimeout(() => {
-          navigate("/");
-        }, 2000);
       } else {
         handleError(message);
       }

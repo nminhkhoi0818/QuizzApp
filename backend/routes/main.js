@@ -1,4 +1,4 @@
-const { Signup, Login } = require("../controllers/authController");
+const { Signup, Login, Logout } = require("../controllers/authController");
 const {
   getAllTopics,
   getLeaderboard,
@@ -8,13 +8,14 @@ const {
   deleteTopic,
   submitScore,
 } = require("../controllers/quizController");
-const { userVerification } = require("../middlewares/authMiddleware");
+const { verifyUser } = require("../controllers/userController");
 const router = require("express").Router();
 
 // Authentication
-router.post("/", userVerification);
+router.post("/", verifyUser);
 router.post("/signup", Signup);
 router.post("/login", Login);
+router.post("/logout", Logout);
 
 // Topics
 router.get("/topics", getAllTopics);

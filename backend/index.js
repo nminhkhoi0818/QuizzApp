@@ -20,9 +20,9 @@ app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
 
-app.use(cookieParser());
-
 app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
 
 app.use(
   cors({
