@@ -64,7 +64,9 @@ const PlayingPage = () => {
 
   useEffect(() => {
     const countdownInterval = setInterval(() => {
-      setRemainingTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      setRemainingTime((prevTime) =>
+        prevTime > 0 ? prevTime - 1 : setQuizCompleted(true)
+      );
     }, 1000);
 
     return () => {
@@ -113,6 +115,10 @@ const PlayingPage = () => {
     };
     handleSubmitScore();
   }, [quizCompleted]);
+
+  const formatTime = (time) => {
+    return time < 10 ? `0${time}` : `${time}`;
+  };
 
   return (
     <>
@@ -188,7 +194,7 @@ const PlayingPage = () => {
                   </div>
                   <div className="d-flex">
                     <img src="/images/clock-icon.png" alt="" />
-                    <h5 className="ms-3">00:{remainingTime}</h5>
+                    <h5 className="ms-3">00:{formatTime(remainingTime)}</h5>
                   </div>
                 </div>
 

@@ -75,7 +75,7 @@ const TopicPage = () => {
                 className="bottom-right-icon"
                 alt=""
               />
-              <p className="h5 mb-3">Do you want to attempt?</p>
+              <p className="h5 mb-3 text-center">Do you want to attempt?</p>
               <Link
                 to={`/topic/${topicName}/playing`}
                 className="play-btn text-center"
