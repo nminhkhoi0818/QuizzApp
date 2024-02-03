@@ -67,7 +67,6 @@ const HeaderComponent = () => {
             {openAccount && (
               <div className="account-content">
                 <Link to="/admin/topic-management">Topic management</Link>
-                <a href="">My Profile</a>
                 <a onClick={Logout} className="logout">
                   Log out
                 </a>

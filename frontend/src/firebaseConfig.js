@@ -6,12 +6,12 @@ import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCFuCt9LJy6K0a_CpH9bOqQrw_b9NiI0gw",
-  authDomain: "quizzapp-a8632.firebaseapp.com",
-  projectId: "quizzapp-a8632",
-  storageBucket: "quizzapp-a8632.appspot.com",
-  messagingSenderId: "881817678892",
-  appId: "1:881817678892:web:83c05777e20c7c9954cd89",
+  apiKey: "AIzaSyAYsx5iqMgUdXNbU1UhbRpjj1VvaZdoGv0",
+  authDomain: "quizzapp-fb7c7.firebaseapp.com",
+  projectId: "quizzapp-fb7c7",
+  storageBucket: "quizzapp-fb7c7.appspot.com",
+  messagingSenderId: "744695740763",
+  appId: "1:744695740763:web:d32507323be4a03488c27e",
 };
 
 // Initialize Firebase
